@@ -64,48 +64,52 @@ export default function CrashCoursePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white py-10 px-6">
+    <div className="min-h-screen text-white">
       <Homer />
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-500 to-purple-400 bg-clip-text text-transparent mb-6">
-          Crash Course PDF to Speech
-        </h1>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="file"
-            accept=".pdf"
-            onChange={handleFileChange}
-            className="block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-500 file:text-white hover:file:bg-indigo-600 transition-colors"
-          />
-
-          <button
-            type="submit"
-            disabled={!file || isLoading}
-            className={`w-full py-2 rounded-lg text-lg font-medium transition-colors 
-              ${
-                isLoading
-                  ? "bg-gray-700 cursor-not-allowed"
-                  : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-              } text-white`}
-          >
-            {isLoading ? (
-              <Loader2 className="animate-spin inline-block mr-2" />
-            ) : null}
-            {isLoading ? "Processing..." : "Process PDF"}
-          </button>
-        </form>
-
-        {isLoading && (
-          <div className="flex items-center justify-center mt-6 space-x-2">
-            <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
-            <span className="text-lg text-indigo-400">Processing PDF...</span>
+        <div className="mx-auto max-w-4xl pb-12 text-center">
+          <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-gradient-to-r before:from-transparent before:to-indigo-200/50 after:h-px after:w-8 after:bg-gradient-to-l after:from-transparent after:to-indigo-200/50">
+            <span className="inline-flex bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent text-3xl">
+              Crash Course
+            </span>
           </div>
-        )}
+          <h1 className="text-5xl animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,theme(colors.gray.200),theme(colors.indigo.200),theme(colors.gray.50),theme(colors.indigo.300),theme(colors.gray.200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle font-semibold text-transparent">
+            Lecture Material to Audio Summary
+          </h1>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6 ">
+          <div className="flex justify-center">
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={handleFileChange}
+              className="block w-full max-w-xs text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-500 file:text-white hover:file:bg-indigo-600 transition-colors"
+            />
+          </div>
+
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              disabled={!file || isLoading}
+              className={`w-full max-w-xs py-2 rounded-lg text-lg font-medium transition-colors 
+        ${
+          isLoading
+            ? "bg-gray-700 cursor-not-allowed"
+            : "bg-gradient-to-r from-indigo-500 to-indigo-200"
+        } text-white`}
+            >
+              {isLoading ? (
+                <Loader2 className="animate-spin inline-block mr-2" />
+              ) : null}
+              {isLoading ? "Processing..." : "Process PDF"}
+            </button>
+          </div>
+        </form>
 
         {transcript && (
           <div className="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-semibold bg-gradient-to-r from-indigo-500 to-purple-400 bg-clip-text text-transparent mb-4">
+            <h2 className="text-2xl font-semibold bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent mb-4">
               Transcript
             </h2>
             <TextToSpeech text={transcript} />
