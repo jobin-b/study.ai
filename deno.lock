@@ -2908,6 +2908,7 @@
         "npm:@types/react@^18",
         "npm:canvas@^2.11.2",
         "npm:dotenv@^16.4.5",
+        "npm:framer-motion@^11.9.0",
         "npm:lucide-react@^0.446.0",
         "npm:next@14.2.13",
         "npm:parse@^5.3.0",

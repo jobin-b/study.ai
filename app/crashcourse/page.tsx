@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { TextToSpeech } from "./TextToSpeech";
 import { Loader2 } from "lucide-react";
 import extractTextFromPDF from "pdf-parser-client-side";
+import Homer from "@/components/ui/homer";
 
 export default function CrashCoursePage() {
   const [file, setFile] = useState<File | null>(null);
@@ -64,6 +65,7 @@ export default function CrashCoursePage() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white py-10 px-6">
+      <Homer />
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-500 to-purple-400 bg-clip-text text-transparent mb-6">
           Crash Course PDF to Speech
