@@ -1,5 +1,5 @@
 const runBoard = async (req: Request, endpointURL: string) => {
-  const $key = "bb-582y3b5v6s3p4x3d5o4s633u201z4a491f1123ri3965f1s3b7";
+  const $key = process.env.GEMINI_KEY;
   if (!$key) {
     return Error("BB_COMMUNITY_KEY is not set");
   }
