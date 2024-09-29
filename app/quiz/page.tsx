@@ -110,10 +110,12 @@ const AIChatComponent: React.FC = () => {
           </div>
 
           <div className="flex-grow flex flex-col">
-            <div
-              className="bg-gray-800 rounded-lg p-4 flex-grow overflow-y-auto mb-4"
-              style={{ maxHeight: "calc(100vh - 300px)" }}
-            >
+            <div className="bg-gray-800 rounded-lg p-4 mb-4 overflow-y-auto h-[500px]">
+              {messages.length === 0 && (
+                <div className="text-center text-gray-500 mt-4">
+                  Start a conversation or upload a PDF to begin.
+                </div>
+              )}
               {messages.map((msg, index) => (
                 <motion.div
                   key={index}
