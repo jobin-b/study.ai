@@ -37,13 +37,11 @@ export default function Workflows() {
                 {/* Content */}
                 <div className="p-6">
                   <div className="mb-3">
-                    <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,theme(colors.gray.700/.15),theme(colors.gray.700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
-                      <span className="bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
-                        Practice Quiz
-                      </span>
+                    <span className="text-2xl bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
+                      Practice Quiz
                     </span>
                   </div>
-                  <p className="text-indigo-100/65">
+                  <p className="text-xl text-indigo-100/65">
                     Create on-the-fly interactive quizzes with your study notes.
                   </p>
                 </div>
@@ -75,13 +73,11 @@ export default function Workflows() {
                 {/* Content */}
                 <div className="p-6">
                   <div className="mb-3">
-                    <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,theme(colors.gray.700/.15),theme(colors.gray.700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
-                      <span className="bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
-                        Flash Cards
-                      </span>
+                    <span className="text-2xl mb-3 bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
+                      Flash Cards
                     </span>
                   </div>
-                  <p className="text-indigo-200/65">
+                  <p className="text-xl text-indigo-200/65">
                     Instantly generate flash cards for your cram session.
                   </p>
                 </div>
@@ -113,13 +109,11 @@ export default function Workflows() {
                 {/* Content */}
                 <div className="p-6">
                   <div className="mb-3">
-                    <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,theme(colors.gray.700/.15),theme(colors.gray.700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
-                      <span className="bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
-                        Lecture Assistant
-                      </span>
+                    <span className="text-2xl mb-3 bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
+                      Lecture Assistant
                     </span>
                   </div>
-                  <p className="text-indigo-100/65">
+                  <p className="text-xl text-indigo-100/65">
                     Immediately create a condensed set of concise notes from
                     your teacher's lecture slides.
                   </p>
