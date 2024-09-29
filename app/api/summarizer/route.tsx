@@ -47,5 +47,13 @@ export async function POST(req: Request) {
   const url =
     "https://breadboard-community.wl.r.appspot.com/boards/@AdorableCoyote/studyai-summarizer.bgl.api/run";
 
-  return await runBoard(req, url);
+  let result = await runBoard(req, url);
+  if (result instanceof Error) {
+    return new Response("An error occured", {
+      status: 500,
+      statusText: JSON.stringify(result),
+    });
+  }
+
+  return result;
 }
