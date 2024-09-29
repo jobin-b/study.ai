@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { TextToSpeech } from "./TextToSpeech";
 import { Loader2 } from "lucide-react";
+import extractTextFromPDF from "pdf-parser-client-side";
 
 export default function CrashCoursePage() {
   const [file, setFile] = useState<File | null>(null);
@@ -20,10 +21,11 @@ export default function CrashCoursePage() {
 
     setIsLoading(true);
     const formData = new FormData();
-    formData.append("pdf", file);
+    const text = await extractTextFromPDF(file, "clean");
+    formData.append("text", text!);
 
     try {
-      const response = await fetch("/api/pdf", {
+      const response = await fetch("/api/crashcourse", {
         method: "POST",
         body: formData,
       });
