@@ -113,6 +113,8 @@ export default function CrashCoursePage() {
               Transcript
             </h2>
             <TextToSpeech text={transcript} />
+
+            <p>{transcript}</p>
           </div>
         )}
       </div>
