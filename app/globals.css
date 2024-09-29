@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  ul,
+  ol {
+    list-style: revert;
+    padding: revert;
+    margin: revert;
+    margin-top: 0px;
+    padding-inline-start: revert;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

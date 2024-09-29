@@ -108,9 +108,9 @@ export default function InitForm(props: InitFormProps) {
           >
             Copy
           </button>
-          <h3 className="text-xl font-semibold">Generated Notes:</h3>
+          <h3 className="text-xl font-semibold">Generated Notes</h3>
           <div
-            className="text-gray-300 whitespace-pre-wrap"
+            className="text-gray-300 whitespace-normal"
             dangerouslySetInnerHTML={{ __html: output }}
           ></div>
         </div>
