@@ -3,12 +3,12 @@ import extractTextFromPDF from "pdf-parser-client-side";
 
 export type InitFormProps = {
   postUrl: string;
-  setLoadedData: Function;
 };
 
 export default function InitForm(props: InitFormProps) {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [output, setOutput] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -32,7 +32,6 @@ export default function InitForm(props: InitFormProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          $key: "bb-582y3b5v6s3p4x3d5o4s633u201z4a491f1123ri3965f1s3b7",
           context: [
             {
               role: "user",
@@ -50,7 +49,8 @@ export default function InitForm(props: InitFormProps) {
         throw new Error("Failed to process PDF");
       }
 
-      props.setLoadedData(await response.text());
+      const result = await response.text();
+      setOutput(result);
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while processing the PDF.");
@@ -59,33 +59,62 @@ export default function InitForm(props: InitFormProps) {
     }
   };
 
+  const handleCopy = () => {
+    if (output) {
+      navigator.clipboard.writeText(output);
+      alert("Copied to clipboard!");
+    }
+  };
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col w-full h-full p-8 gap-8 justify-center items-stretch"
-    >
-      <label
-        htmlFor="initialInput"
-        className="text-center text-2xl text-indigo-200/65"
-        data-aos="fade-up"
-        data-aos-delay={200}
+    <div className="flex flex-col items-center">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col w-full max-w-md gap-6 p-8 bg-gray-800 rounded-lg shadow-lg"
       >
-        Enter your lecture slides here
-      </label>
-      <input
-        id="initialInput"
-        name="initialInput"
-        type="file"
-        accept=".pdf"
-        onChange={handleFileChange}
-        className="border-2 p-2 bg-indigo-950/40 border-indigo-800 h-full"
-      ></input>
-      <button
-        type="submit"
-        className="border-2 rounded-xl bg-indigo-950/40 border-gray-500 text-xl"
-      >
-        Generate Notes
-      </button>
-    </form>
+        <h2 className="text-3xl text-center text-white font-semibold mb-4">
+          Upload Lecture Slides
+        </h2>
+
+        <div className="flex flex-col items-center">
+          <input
+            id="initialInput"
+            name="initialInput"
+            type="file"
+            accept=".pdf"
+            onChange={handleFileChange}
+            className="border-2 border-gray-600 rounded-xl p-3 w-full text-lg text-white bg-gray-700 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={isLoading || !file}
+          className={`w-full p-3 text-lg font-semibold rounded-xl transition duration-300 ease-in-out ${
+            isLoading || !file
+              ? "bg-gray-500 cursor-not-allowed"
+              : "bg-indigo-600 hover:bg-indigo-500"
+          } text-white border-2 border-indigo-600`}
+        >
+          {isLoading ? "Generating..." : "Generate Notes"}
+        </button>
+      </form>
+
+      {output && (
+        <div className="relative mt-6 w-full max-w-8xl p-6 bg-[#2c2f42] border border-[#3b3f58] rounded-lg text-white">
+          <button
+            onClick={handleCopy}
+            className="absolute top-3 right-3 bg-indigo-600 hover:bg-indigo-500 text-white py-1 px-3 rounded-lg text-sm"
+          >
+            Copy
+          </button>
+          <h3 className="text-xl font-semibold">Generated Notes:</h3>
+          <div
+            className="text-gray-300 whitespace-pre-wrap"
+            dangerouslySetInnerHTML={{ __html: output }}
+          ></div>
+        </div>
+      )}
+    </div>
   );
 }

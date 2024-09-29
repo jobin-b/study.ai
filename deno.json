@@ -1,0 +1,11 @@
+{
+  "imports": {
+    "grey-matter": "npm:grey-matter@^0.0.0",
+    "markdown-to-html": "npm:markdown-to-html@^0.0.13",
+    "markdown-to-jsx": "npm:markdown-to-jsx@^7.5.0",
+    "react-markdown": "npm:react-markdown@^9.0.1",
+    "remark": "npm:remark@^15.0.1",
+    "remark-html": "npm:remark-html@^16.0.1",
+    "remarkable": "npm:remarkable@^2.0.1"
+  }
+}
