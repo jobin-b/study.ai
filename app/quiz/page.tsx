@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Homer from "@/components/ui/homer";
+import extractTextFromPDF from "pdf-parser-client-side";
 
 interface Message {
   role: "user" | "ai";
@@ -15,6 +16,7 @@ const AIChatComponent: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [nextToken, setNextToken] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -24,15 +26,32 @@ const AIChatComponent: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() && !file) return;
 
-    const userMessage: Message = { role: "user", content: input };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
     setIsLoading(true);
 
+    let messageContent = input;
+
+    if (file) {
+      try {
+        const extractedText = await extractTextFromPDF(file, "clean");
+        if (extractedText) {
+          messageContent = extractedText;
+        }
+      } catch (error) {
+        console.error("Error extracting text from PDF:", error);
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    const userMessage: Message = { role: "user", content: messageContent };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setFile(null);
+
     try {
-      const requestBody: any = { message: input };
+      const requestBody: any = { message: messageContent };
       if (nextToken) {
         requestBody.nextToken = nextToken;
       }
@@ -52,22 +71,24 @@ const AIChatComponent: React.FC = () => {
       if (data.response) {
         const aiMessage: Message = { role: "ai", content: data.response };
         setMessages((prev) => [...prev, aiMessage]);
-        // Update the next token for the next request
         if (data.nextToken) {
           setNextToken(data.nextToken);
         } else {
-          // If no nextToken is provided, reset it
           setNextToken(null);
         }
       } else if (data.error) {
         console.error("Error:", data.error);
-        // Optionally, display an error message to the user
       }
     } catch (error) {
       console.error("Error:", error);
-      // Handle error (e.g., show an error message to the user)
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setFile(event.target.files[0]);
     }
   };
 
@@ -112,22 +133,35 @@ const AIChatComponent: React.FC = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          <form onSubmit={handleSubmit} className="flex items-center">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              className="flex-grow p-2 rounded-l-lg bg-gray-700 text-white focus:outline-none"
-              placeholder="Type your message..."
-              disabled={isLoading}
-            />
-            <button
-              type="submit"
-              className="btn-sm relative rounded-r-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:bg-indigo-400"
-              disabled={isLoading}
-            >
-              {isLoading ? "Sending..." : "Send"}
-            </button>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="flex items-center">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                className="flex-grow p-2 rounded-l-lg bg-gray-700 text-white focus:outline-none"
+                placeholder="Type your message..."
+                disabled={isLoading}
+              />
+              <button
+                type="submit"
+                className="btn-sm relative rounded-r-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:bg-indigo-400"
+                disabled={isLoading}
+              >
+                {isLoading ? "Sending..." : "Send"}
+              </button>
+            </div>
+            <div className="flex items-center space-x-4">
+              <input
+                type="file"
+                onChange={handleFileChange}
+                accept=".pdf"
+                className="flex-grow p-2 text-sm text-gray-200 bg-gray-700 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700"
+              />
+              {file && (
+                <span className="text-sm text-indigo-200">{file.name}</span>
+              )}
+            </div>
           </form>
         </div>
       </div>
