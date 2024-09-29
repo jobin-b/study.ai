@@ -67,7 +67,7 @@ export default function CrashCoursePage() {
     <div className="min-h-screen text-white">
       <Homer />
       <div className="max-w-4xl mx-auto">
-        <div className="mx-auto max-w-4xl pb-12 text-center">
+        <div className="mx-auto max-w-4xl py-12 text-center">
           <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-gradient-to-r before:from-transparent before:to-indigo-200/50 after:h-px after:w-8 after:bg-gradient-to-l after:from-transparent after:to-indigo-200/50">
             <span className="inline-flex bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent text-3xl">
               Crash Course
@@ -96,7 +96,7 @@ export default function CrashCoursePage() {
         ${
           isLoading
             ? "bg-gray-700 cursor-not-allowed"
-            : "bg-gradient-to-r from-indigo-500 to-indigo-200"
+            : "bg-gradient-to-r from-indigo-600 to-indigo-400"
         } text-white`}
             >
               {isLoading ? (

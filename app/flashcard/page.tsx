@@ -206,7 +206,7 @@ const FlashcardApp: React.FC = () => {
               </div>
               <button
                 type="submit"
-                className="w-full btn-sm relative rounded-full bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600"
+                className="w-full text-lg relative rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-400 px-4 py-2 font-medium text-white hover:bg-indigo-600"
               >
                 Generate Flashcards
               </button>
