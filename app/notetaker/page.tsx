@@ -15,7 +15,7 @@ export default function Notetaker() {
         Notetaker
       </h1>
       <InitForm postUrl="/api/summarizer" setLoadedData={setResponseData} />
-      <p>{responseData}</p>
+      <code>{responseData}</code>
     </div>
   );
 }
