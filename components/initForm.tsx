@@ -2,11 +2,12 @@ import { FormEvent } from "react";
 
 export type InitFormProps = {
   postUrl: string;
+  setLoadedData: Function;
 };
 
 async function onSubmit(event: FormEvent, props: InitFormProps) {
   event.preventDefault();
-  fetch(props.postUrl, {
+  const response = await fetch(props.postUrl, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -26,13 +27,18 @@ async function onSubmit(event: FormEvent, props: InitFormProps) {
       ],
     }),
   });
+
+  console.log("Frontend received response: ", response);
+
+  return response;
 }
 
 export default function InitForm(props: InitFormProps) {
   return (
     <form
-      onSubmit={(event: FormEvent) => {
-        onSubmit(event, props);
+      onSubmit={async (event: FormEvent) => {
+        const response = await onSubmit(event, props);
+        props.setLoadedData(await response.text());
       }}
     >
       <label htmlFor="initialInput">Input Here</label>

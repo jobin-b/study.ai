@@ -6,9 +6,6 @@ const runBoard = async (req: Request, endpointURL: string) => {
 
   const body = (await req.json()) as { $key: string };
 
-  console.log("Sending breadboard run with body: ", body.context[0].parts);
-  console.log(JSON.stringify(body));
-
   body.$key = $key;
 
   const response = await fetch(endpointURL, {
@@ -19,12 +16,15 @@ const runBoard = async (req: Request, endpointURL: string) => {
     body: JSON.stringify(body),
   });
 
-  console.log("Summarizer response: ", JSON.stringify(response.body));
+  const responseData = (await response.text()).replace(/^data: /, "");
+  const responseJSON = JSON.parse(responseData);
+  const responseBody = responseJSON[1].outputs.context[1].parts[0].text;
 
-  return new Response(response.body, {
+  console.log("Summarizer response: ", responseBody);
+
+  return new Response(responseBody, {
     status: response.status,
     statusText: response.statusText,
-    headers: response.headers,
   });
 };
 
