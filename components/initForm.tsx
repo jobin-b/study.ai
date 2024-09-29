@@ -67,7 +67,23 @@ export default function InitForm(props: InitFormProps) {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center gap-8 pb-8">
+      {output && (
+        <div className="relative w-full max-w-10xl p-6 bg-[#2c2f42] border border-[#3b3f58] rounded-lg text-white">
+          <button
+            onClick={handleCopy}
+            className="absolute top-6 right-6 bg-indigo-600 hover:bg-indigo-500 text-white py-1 px-4 rounded-md text-md"
+          >
+            Copy
+          </button>
+          <h3 className="text-xl font-semibold">Generated Notes</h3>
+          <div
+            className="text-gray-300 whitespace-normal"
+            dangerouslySetInnerHTML={{ __html: output }}
+          ></div>
+        </div>
+      )}
+
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-stretch max-w-2xl gap-6 p-8 bg-gray-800 rounded-lg shadow-lg"
@@ -99,22 +115,6 @@ export default function InitForm(props: InitFormProps) {
           {isLoading ? "Generating..." : "Generate Notes"}
         </button>
       </form>
-
-      {output && (
-        <div className="relative mt-6 w-full max-w-10xl p-6 bg-[#2c2f42] border border-[#3b3f58] rounded-lg text-white">
-          <button
-            onClick={handleCopy}
-            className="absolute top-3 right-3 bg-indigo-600 hover:bg-indigo-500 text-white py-1 px-3 rounded-lg text-sm"
-          >
-            Copy
-          </button>
-          <h3 className="text-xl font-semibold">Generated Notes</h3>
-          <div
-            className="text-gray-300 whitespace-normal"
-            dangerouslySetInnerHTML={{ __html: output }}
-          ></div>
-        </div>
-      )}
     </div>
   );
 }
