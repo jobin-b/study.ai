@@ -96,8 +96,8 @@ const AIChatComponent: React.FC = () => {
   return (
     <>
       <Homer />
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <div className="pb-12 md:pb-20">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
+        <div className="pb-12 md:pb-20 w-full h-full">
           <div className="mx-auto max-w-3xl pb-12 text-center md:pb-20">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-gradient-to-r before:from-transparent before:to-indigo-200/50 after:h-px after:w-8 after:bg-gradient-to-l after:from-transparent after:to-indigo-200/50">
               <span className="text-3xl inline-flex bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
@@ -109,7 +109,7 @@ const AIChatComponent: React.FC = () => {
             </h2>
           </div>
 
-          <div className="bg-gray-800 rounded-lg p-4 h-96 overflow-y-auto mb-4">
+          <div className="bg-gray-800 rounded-lg p-4 h-[50vh] overflow-y-auto mb-4">
             {messages.map((msg, index) => (
               <motion.div
                 key={index}
