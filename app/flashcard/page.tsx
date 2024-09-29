@@ -1,105 +1,79 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const flashcardsData = [
-  {
-    topic: "Introduction",
-    back: "What is the purpose of the test plan? What is the importance of comprehensive testing? What are the key testing objectives? What is the scope of testing? Who is the target audience for this test plan?",
-  },
-  {
-    topic: "Test Strategy",
-    back: "What kind of testing strategy is being used for this project? What are the different levels of testing involved? What is the order in which they will be performed?",
-  },
-  {
-    topic: "Test Objectives",
-    back: "What are the specific goals of the testing process?  What are the key aspects being tested? What are the expected outcomes of the testing?",
-  },
-  {
-    topic: "Test Scope",
-    back: "What specific functionalities and nonfunctional requirements are included in the testing? What are the different types of tests being performed?  What components or modules are being tested?",
-  },
-  {
-    topic: "Test Deliverables",
-    back: "What specific documents and artifacts will be produced during the testing process? What information will be included in each deliverable? What is the purpose of each deliverable?",
-  },
-  {
-    topic: "Test Schedule",
-    back: "When will testing be performed? How frequently will testing occur?  What are the specific milestones or deadlines associated with testing?",
-  },
-  {
-    topic: "Test Environment",
-    back: "What kind of hardware and software is needed for the testing process? What environmental variables need to be considered? What are the network connectivity requirements?",
-  },
-  {
-    topic: "Test Entry and Exit Criteria",
-    back: "What conditions need to be met before testing can begin? What conditions need to be met to consider testing complete?",
-  },
-  {
-    topic: "Test Pass and Fail Criteria",
-    back: "How will the success of a test case be determined? What specific criteria will be used to assess whether a test has passed or failed? Are there any specific pass/fail criteria for individual test cases?",
-  },
-  {
-    topic: "Test Suspension and Resumption Criteria",
-    back: "Under what circumstances will testing be paused? What conditions need to be met before testing can resume?",
-  },
-  {
-    topic: "Test Design and Execution",
-    back: "How will the tests be designed and executed? Will the tests be automated or manually executed? What tools or techniques will be used to execute the tests?",
-  },
-  {
-    topic: "Test Data and Defect Management",
-    back: "How will test data be collected and recorded? How will defects be identified and reported? What is the process for tracking and resolving defects?",
-  },
-  {
-    topic: "Risk Analysis",
-    back: "What are the potential risks associated with testing? What are the mitigation strategies for each risk? How will risks be monitored and managed during testing?",
-  },
-  {
-    topic: "Roles and Responsibilities",
-    back: "Who is responsible for which aspects of the testing process?  What are the specific roles and responsibilities of each team member?",
-  },
-  {
-    topic: "Course Reviews",
-    back: "What specific functionalities are being tested within Course Reviews? What are the expected outcomes of these tests? What are the specific test cases for Course Reviews?",
-  },
-  {
-    topic: "Room Reservations",
-    back: "What specific functionalities are being tested within Room Reservations? What are the expected outcomes of these tests? What are the specific test cases for Room Reservations?",
-  },
-  {
-    topic: "Schedule Builder",
-    back: "What specific functionalities are being tested within Schedule Builder? What are the expected outcomes of these tests? What are the specific test cases for Schedule Builder?",
-  },
-  {
-    topic: "Locked/Blacklist Sections",
-    back: "What specific functionalities are being tested within Locked/Blacklist Sections? What are the expected outcomes of these tests? What are the specific test cases for Locked/Blacklist Sections?",
-  },
-  {
-    topic: "Server Performance",
-    back: "What specific performance metrics are being tested? What are the expected outcomes of these tests? What are the specific test cases for Server Performance?",
-  },
-  {
-    topic: "Reliability",
-    back: "What aspects of the application's reliability are being tested? What are the expected outcomes of these tests? What are the specific test cases for Reliability?",
-  },
-  {
-    topic: "Availability and Portability",
-    back: "What aspects of the application's availability and portability are being tested? What are the expected outcomes of these tests? What are the specific test cases for Availability and Portability?",
-  },
-  {
-    topic: "Security",
-    back: "What security vulnerabilities are being tested? What are the expected outcomes of these tests? What are the specific test cases for Security?",
-  },
-  {
-    topic: "Integration Testing",
-    back: "What are the key areas of focus for integration testing? What are the expected outcomes of integration testing? What are the specific test cases for Integration Testing?",
-  },
-];
+interface Flashcard {
+  topic: string;
+  back: string;
+}
 
-const FlashcardApp = () => {
+const FlashcardApp: React.FC = () => {
+  const [flashcardsData, setFlashcardsData] = useState<Flashcard[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchFlashcardsData();
+  }, []);
+
+  const fetchFlashcardsData = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/flashcards", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          $key: "bb-5u30382r5t3h705q576e3z17102c223t623f5a6f4o2h2pz442",
+          context: [
+            {
+              role: "user",
+              parts: [
+                {
+                  text: "This Test Plan's purpose is to establish the testing methodologies and protocols essential for validating that the Wayne Utilities application aligns with the predefined requirements outlined in the Wayne Utilities Requirement Specification document. It serves as a comprehensive roadmap for the testing team, facilitating thorough evaluation to guarantee the application's quality and dependability prior to release. Along with this, it would serve as a proper comprehensive guide for parties aside from the testing team to view the testing approach done by the team",
+                },
+              ],
+            },
+          ],
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch flashcards data");
+      }
+
+      const text = await response.text();
+      console.log("Raw response:", text);
+
+      // Parse the outer JSON structure
+      const data = JSON.parse(text.replace(/^data: /, ""));
+
+      // Navigate to the part containing the flashcards JSON string
+      const flashcardsJsonString = data[1].outputs.context[3].parts[0].text;
+
+      // Extract the actual JSON array string from the text
+      const match = flashcardsJsonString.match(/```json\n([\s\S]*?)\n```/);
+      if (!match) {
+        throw new Error("Could not find flashcards data in the response");
+      }
+
+      // Parse the inner JSON array
+      const flashcardsArray: Flashcard[] = JSON.parse(match[1]);
+
+      console.log("Parsed flashcards:", flashcardsArray);
+
+      setFlashcardsData(flashcardsArray);
+    } catch (error) {
+      console.error("Full error:", error);
+      setError("Error fetching flashcards: " + (error as Error).message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleNextCard = () => {
     setCurrentCardIndex((prevIndex) => (prevIndex + 1) % flashcardsData.length);
@@ -117,6 +91,26 @@ const FlashcardApp = () => {
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
   };
+
+  if (isLoading) {
+    return (
+      <div className="text-center text-indigo-200/65">
+        Loading flashcards...
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500">{error}</div>;
+  }
+
+  if (flashcardsData.length === 0) {
+    return (
+      <div className="text-center text-indigo-200/65">
+        No flashcards available.
+      </div>
+    );
+  }
 
   const currentCard = flashcardsData[currentCardIndex];
 
