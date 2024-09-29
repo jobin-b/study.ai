@@ -1,9 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { config } from "dotenv";
-
-config(); // Load environment variables
 
 interface Flashcard {
   topic: string;
@@ -31,13 +28,12 @@ const FlashcardApp: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          $key: process.env.GEMINI_KEY,
           context: [
             {
               role: "user",
               parts: [
                 {
-                  text: "This Test Plan's purpose is to establish the testing methodologies and protocols essential for validating that the Wayne Utilities application aligns with the predefined requirements outlined in the Wayne Utilities Requirement Specification document. It serves as a comprehensive roadmap for the testing team, facilitating thorough evaluation to guarantee the application's quality and dependability prior to release. Along with this, it would serve as a proper comprehensive guide for parties aside from the testing team to view the testing approach done by the team",
+                  text: "This Test Plan's purpose is to establish the testing methodologies and protocols essential for validating that the Wayne Utilities application aligns with the predefined requirements outlined in the Wayne Utilities Requirement Specification document.",
                 },
               ],
             },
@@ -49,26 +45,7 @@ const FlashcardApp: React.FC = () => {
         throw new Error("Failed to fetch flashcards data");
       }
 
-      const text = await response.text();
-      console.log("Raw response:", text);
-
-      // Parse the outer JSON structure
-      const data = JSON.parse(text.replace(/^data: /, ""));
-
-      // Navigate to the part containing the flashcards JSON string
-      const flashcardsJsonString = data[1].outputs.context[3].parts[0].text;
-
-      // Extract the actual JSON array string from the text
-      const match = flashcardsJsonString.match(/```json\n([\s\S]*?)\n```/);
-      if (!match) {
-        throw new Error("Could not find flashcards data in the response");
-      }
-
-      // Parse the inner JSON array
-      const flashcardsArray: Flashcard[] = JSON.parse(match[1]);
-
-      console.log("Parsed flashcards:", flashcardsArray);
-
+      const flashcardsArray: Flashcard[] = await response.json();
       setFlashcardsData(flashcardsArray);
     } catch (error) {
       console.error("Full error:", error);
