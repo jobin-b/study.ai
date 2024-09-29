@@ -67,7 +67,7 @@ export default function InitForm(props: InitFormProps) {
   };
 
   return (
-    <div className="flex flex-col items-stretch justify-stretch gap-6 pb-8">
+    <div className="flex flex-col items-stretch justify-stretch gap-6 pb-8 max-w-6xl">
       {output && (
         <div className="relative w-full bg-gray-800 rounded-lg">
           <div className="w-full p-4 bg-gray-700 rounded-t-lg">
