@@ -9,8 +9,8 @@ export default function Notetaker() {
     <>
       <Homer></Homer>
       <div className="flex flex-row w-full justify-center">
-        <div className="flex flex-col items-center py-12 pb-0 w-2/3">
-          <div className="max-w-3xl pb-6 text-center">
+        <div className="flex flex-col items-stretch justify-center py-12 pb-0">
+          <div className=" pb-6 text-center">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-gradient-to-r before:from-transparent before:to-indigo-200/50 after:h-px after:w-8 after:bg-gradient-to-l after:from-transparent after:to-indigo-200/50">
               <span className="inline-flex bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent text-3xl">
                 Lecture Assistant
