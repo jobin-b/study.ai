@@ -46,27 +46,22 @@ const FlashcardApp: React.FC = () => {
         }),
       });
 
-      console.log("Response status:", response.status);
-
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log("Received data:", data);
 
       if (!Array.isArray(data)) {
         throw new Error("Received data is not an array");
       }
 
       setFlashcardsData(data);
-      console.log("Flashcards set:", data);
     } catch (error) {
       console.error("Error fetching flashcards:", error);
       setError("Error fetching flashcards: " + (error as Error).message);
     } finally {
       setIsLoading(false);
-      console.log("Loading finished");
     }
   };
 
@@ -114,26 +109,14 @@ const FlashcardApp: React.FC = () => {
     await fetchFlashcardsData(text);
   };
 
-  if (isLoading) {
-    return (
-      <div className="text-center text-indigo-200/65">
-        Loading flashcards...
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
-  }
-
   return (
     <>
       <Homer />
-      <section>
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="pb-12 md:pb-20">
+      <section className="min-h-screen flex flex-col">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 flex-grow">
+          <div className="py-12">
             {/* Section header */}
-            <div className="mx-auto max-w-3xl pb-12 text-center md:pb-20">
+            <div className="mx-auto max-w-3xl pb-12 text-center">
               <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-gradient-to-r before:from-transparent before:to-indigo-200/50 after:h-px after:w-8 after:bg-gradient-to-l after:from-transparent after:to-indigo-200/50">
                 <span className="inline-flex bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent text-3xl">
                   Flashcard Quiz
@@ -144,14 +127,73 @@ const FlashcardApp: React.FC = () => {
               </h1>
             </div>
 
+            {/* Flashcard */}
+            {isLoading ? (
+              <div className="text-center text-indigo-200/65 text-xl">
+                Loading flashcards...
+              </div>
+            ) : error ? (
+              <div className="text-center text-red-500 text-xl">{error}</div>
+            ) : flashcardsData.length > 0 ? (
+              <div className="mx-auto max-w-2xl mb-12">
+                <div
+                  className="group/card relative h-96 overflow-hidden rounded-2xl bg-gray-800 p-px cursor-pointer [perspective:1000px]"
+                  onClick={handleFlip}
+                >
+                  <motion.div
+                    ref={flipScope}
+                    className="relative z-20 h-full w-full [transform-style:preserve-3d]"
+                    style={{ transformOrigin: "center" }}
+                  >
+                    <div className="absolute inset-0 overflow-hidden rounded-[inherit] bg-gray-950 after:absolute after:inset-0 after:bg-gradient-to-br after:from-gray-900/50 after:via-gray-800/25 after:to-gray-900/50 [backface-visibility:hidden]">
+                      <div className="flex items-center justify-center h-full p-6 text-center">
+                        <p className="text-2xl font-semibold text-indigo-200/65">
+                          {flashcardsData[currentCardIndex].topic}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="absolute inset-0 overflow-hidden rounded-[inherit] bg-gray-950 after:absolute after:inset-0 after:bg-gradient-to-br after:from-gray-900/50 after:via-gray-800/25 after:to-gray-900/50 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                      <div className="flex items-center justify-center h-full p-6 text-center">
+                        <p className="text-2xl font-semibold text-indigo-200/65">
+                          {flashcardsData[currentCardIndex].back}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Navigation buttons */}
+                <div className="flex justify-between mt-4">
+                  <button
+                    onClick={handlePrevCard}
+                    className="btn-sm relative rounded-full bg-gray-800/40 px-4 py-2 text-sm font-medium text-indigo-200/65 hover:bg-gray-800/60"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={handleNextCard}
+                    className="btn-sm relative rounded-full bg-gray-800/40 px-4 py-2 text-sm font-medium text-indigo-200/65 hover:bg-gray-800/60"
+                  >
+                    Next
+                  </button>
+                </div>
+
+                {/* Card counter */}
+                <div className="mt-4 text-center text-sm text-indigo-200/65">
+                  Card {currentCardIndex + 1} of {flashcardsData.length}
+                </div>
+              </div>
+            ) : null}
+
             {/* Input form */}
-            <form onSubmit={handleSubmit} className="mx-auto max-w-sm mb-8">
+            <form onSubmit={handleSubmit} className="mx-auto max-w-lg">
               <div className="mb-4">
                 <textarea
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  className="w-full p-2 text-gray-900 bg-gray-100 rounded"
+                  className="w-full p-3 text-gray-900 bg-gray-100 rounded-lg"
                   placeholder="Enter text for flashcards..."
+                  rows={4}
                 />
               </div>
               <div className="mb-4">
@@ -159,70 +201,16 @@ const FlashcardApp: React.FC = () => {
                   type="file"
                   onChange={handleFileChange}
                   accept=".pdf"
-                  className="w-full p-2 text-gray-900 bg-gray-100 rounded"
+                  className="w-full p-2 text-sm text-gray-900 bg-gray-100 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-500 file:text-white hover:file:bg-indigo-600"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-1.5 text-sm font-medium text-indigo-200/65 hover:bg-gray-800/60"
+                className="w-full btn-sm relative rounded-full bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600"
               >
                 Generate Flashcards
               </button>
             </form>
-
-            {flashcardsData.length > 0 && (
-              <>
-                {/* Flashcard */}
-                <div className="mx-auto max-w-sm">
-                  <div
-                    className="group/card relative h-64 overflow-hidden rounded-2xl bg-gray-800 p-px cursor-pointer [perspective:1000px]"
-                    onClick={handleFlip}
-                  >
-                    <motion.div
-                      ref={flipScope}
-                      className="relative z-20 h-full w-full [transform-style:preserve-3d]"
-                      style={{ transformOrigin: "center" }}
-                    >
-                      <div className="absolute inset-0 overflow-hidden rounded-[inherit] bg-gray-950 after:absolute after:inset-0 after:bg-gradient-to-br after:from-gray-900/50 after:via-gray-800/25 after:to-gray-900/50 [backface-visibility:hidden]">
-                        <div className="flex items-center justify-center h-full p-6 text-center">
-                          <p className="text-xl font-semibold text-indigo-200/65">
-                            {flashcardsData[currentCardIndex].topic}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="absolute inset-0 overflow-hidden rounded-[inherit] bg-gray-950 after:absolute after:inset-0 after:bg-gradient-to-br after:from-gray-900/50 after:via-gray-800/25 after:to-gray-900/50 [backface-visibility:hidden] [transform:rotateY(180deg)]">
-                        <div className="flex items-center justify-center h-full p-6 text-center">
-                          <p className="text-xl font-semibold text-indigo-200/65">
-                            {flashcardsData[currentCardIndex].back}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Navigation buttons */}
-                  <div className="flex justify-between mt-4">
-                    <button
-                      onClick={handlePrevCard}
-                      className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-1.5 text-sm font-medium text-indigo-200/65 hover:bg-gray-800/60"
-                    >
-                      Previous
-                    </button>
-                    <button
-                      onClick={handleNextCard}
-                      className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-1.5 text-sm font-medium text-indigo-200/65 hover:bg-gray-800/60"
-                    >
-                      Next
-                    </button>
-                  </div>
-
-                  {/* Card counter */}
-                  <div className="mt-4 text-center text-sm text-indigo-200/65">
-                    Card {currentCardIndex + 1} of {flashcardsData.length}
-                  </div>
-                </div>
-              </>
-            )}
           </div>
         </div>
       </section>
