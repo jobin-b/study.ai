@@ -2,12 +2,13 @@
 
 export default function Homer() {
   return (
-    <nav className="flex flex-row align-center justify-start gap-6 p-4 absolute">
+    <nav className="flex flex-row align-center justify-start gap-6 p-4">
       <a
         href="/"
-        className="px-4 py-2 text-lg bg-indigo-700/40 border border-indigo-500/40 rounded-lg font-bold text-indigo-200 hover:bg-indigo-800/80 transition-all"
+        className="pl-4 pt-4 animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,theme(colors.gray.200),theme(colors.indigo.200),theme(colors.gray.50),theme(colors.indigo.300),theme(colors.gray.200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-3xl font-semibold text-transparent transition-all duration-300 hover:bg-[linear-gradient(to_right,theme(colors.indigo.300),theme(colors.purple.500),theme(colors.blue.400))] hover:shadow-lg hover:scale-[1.03]"
+        data-aos="fade-up"
       >
-        Home
+        study.ai
       </a>
     </nav>
   );
