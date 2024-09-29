@@ -14,7 +14,6 @@ export default function Home() {
       <PageIllustration />
       <Hero />
       <Workflows />
-      <Cta />
     </>
   );
 }
