@@ -70,7 +70,7 @@ export default function InitForm(props: InitFormProps) {
     <div className="flex flex-col items-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col w-full max-w-md gap-6 p-8 bg-gray-800 rounded-lg shadow-lg"
+        className="flex flex-col items-stretch max-w-2xl gap-6 p-8 bg-gray-800 rounded-lg shadow-lg"
       >
         <h2 className="text-3xl text-center text-white font-semibold mb-4">
           Upload Lecture Slides
@@ -101,7 +101,7 @@ export default function InitForm(props: InitFormProps) {
       </form>
 
       {output && (
-        <div className="relative mt-6 w-full max-w-8xl p-6 bg-[#2c2f42] border border-[#3b3f58] rounded-lg text-white">
+        <div className="relative mt-6 w-full max-w-10xl p-6 bg-[#2c2f42] border border-[#3b3f58] rounded-lg text-white">
           <button
             onClick={handleCopy}
             className="absolute top-3 right-3 bg-indigo-600 hover:bg-indigo-500 text-white py-1 px-3 rounded-lg text-sm"

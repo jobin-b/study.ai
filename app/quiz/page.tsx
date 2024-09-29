@@ -94,9 +94,9 @@ const AIChatComponent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
       <Homer />
-      <div className="flex-grow flex flex-col mx-auto w-full max-w-5xl px-4 sm:px-6 py-8">
+      <div className="flex-grow flex flex-col mx-auto w-full max-w-5xl px-4 sm:px-6 py-12">
         <div className="flex flex-col h-full">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-gradient-to-r before:from-transparent before:to-indigo-200/50 after:h-px after:w-8 after:bg-gradient-to-l after:from-transparent after:to-indigo-200/50">
@@ -173,7 +173,7 @@ const AIChatComponent: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
