@@ -48,7 +48,7 @@ export function TextToSpeech({ text }: TextToSpeechProps) {
 
   return (
     <div className="p-6 rounded-lg bg-gray-800 shadow-lg relative">
-      <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-indigo-500 to-purple-400 bg-clip-text text-transparent">
+      <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
         Text-to-Speech Playback
       </h3>
 
@@ -71,7 +71,7 @@ export function TextToSpeech({ text }: TextToSpeechProps) {
             ${
               tts.isWaiting
                 ? "bg-gray-700 cursor-not-allowed"
-                : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                : "bg-gradient-to-r from-indigo-500 to-indigo-200 hover:to-indigo-300"
             } 
             text-white shadow-md`}
         >
@@ -85,7 +85,7 @@ export function TextToSpeech({ text }: TextToSpeechProps) {
             ${
               tts.playbackStatus !== "playing"
                 ? "bg-gray-700 cursor-not-allowed"
-                : "bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
+                : "bg-gradient-to-r from-indigo-500 to-indigo-200 hover:to-indigo-300"
             } 
             text-white shadow-md`}
         >
