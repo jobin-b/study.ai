@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { config } from "dotenv";
+
+config(); // Load environment variables
 
 interface Flashcard {
   topic: string;
@@ -28,7 +31,7 @@ const FlashcardApp: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          $key: "bb-5u30382r5t3h705q576e3z17102c223t623f5a6f4o2h2pz442",
+          $key: process.env.GEMINI_KEY,
           context: [
             {
               role: "user",
