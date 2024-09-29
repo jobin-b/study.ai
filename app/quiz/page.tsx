@@ -12,6 +12,7 @@ const AIChatComponent: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [nextToken, setNextToken] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -30,10 +31,15 @@ const AIChatComponent: React.FC = () => {
     setIsLoading(true);
 
     try {
+      const requestBody: any = { message: input };
+      if (nextToken) {
+        requestBody.nextToken = nextToken;
+      }
+
       const response = await fetch("/api/quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
@@ -41,9 +47,17 @@ const AIChatComponent: React.FC = () => {
       }
 
       const data = await response.json();
+
       if (data.response) {
         const aiMessage: Message = { role: "ai", content: data.response };
         setMessages((prev) => [...prev, aiMessage]);
+        // Update the next token for the next request
+        if (data.nextToken) {
+          setNextToken(data.nextToken);
+        } else {
+          // If no nextToken is provided, reset it
+          setNextToken(null);
+        }
       } else if (data.error) {
         console.error("Error:", data.error);
         // Optionally, display an error message to the user

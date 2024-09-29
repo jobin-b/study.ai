@@ -4,10 +4,11 @@ const TIMEOUT_MS = 30000; // 30 seconds timeout
 
 export async function POST(req: NextRequest) {
   try {
-    const { message } = await req.json();
-    if (!message) {
+    // Parse the request body
+    const { message, nextToken } = await req.json();
+    if (!message && !nextToken) {
       return NextResponse.json(
-        { error: "Message is required" },
+        { error: "Message or nextToken is required" },
         { status: 400 }
       );
     }
@@ -26,18 +27,25 @@ export async function POST(req: NextRequest) {
     }
 
     console.log("Sending request to:", endpointURL);
-    console.log(
-      "Request body:",
-      JSON.stringify({
-        $key,
-        context: [
-          {
-            role: "user",
-            parts: [{ text: message }],
-          },
-        ],
-      })
-    );
+
+    // Build the request body for the external API
+    const requestBody: any = { $key };
+    if (nextToken) {
+      requestBody.$next = nextToken;
+      requestBody.text = {
+        role: "user",
+        parts: [{ text: message }],
+      };
+    } else {
+      requestBody.context = [
+        {
+          role: "user",
+          parts: [{ text: message }],
+        },
+      ];
+    }
+
+    console.log("Request body:", JSON.stringify(requestBody));
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -47,15 +55,7 @@ export async function POST(req: NextRequest) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        $key,
-        context: [
-          {
-            role: "user",
-            parts: [{ text: message }],
-          },
-        ],
-      }),
+      body: JSON.stringify(requestBody),
       signal: controller.signal,
     });
 
@@ -81,6 +81,7 @@ export async function POST(req: NextRequest) {
     let buffer = "";
     let aiResponse = "";
     let stopReading = false;
+    let nextTokenFromAPI = null;
 
     while (true) {
       const { value, done } = await reader.read();
@@ -100,17 +101,24 @@ export async function POST(req: NextRequest) {
             console.log("Parsed event:", parsedEvent);
 
             if (parsedEvent[0] === "output" && parsedEvent[1].outputs?.output) {
-              for (const output of parsedEvent[1].outputs.output) {
+              const outputs = parsedEvent[1].outputs.output;
+              // Find the last 'model' output
+              for (let i = outputs.length - 1; i >= 0; i--) {
+                const output = outputs[i];
                 if (
                   output.role === "model" &&
                   output.parts &&
                   output.parts[0].text
                 ) {
-                  aiResponse += output.parts[0].text + "\n";
+                  // Capture only the latest AI response
+                  aiResponse = output.parts[0].text.trim();
+                  break;
                 }
               }
             } else if (parsedEvent[0] === "input") {
               console.log("Received 'input' event, stopping read.");
+              // Extract the 'next' token
+              nextTokenFromAPI = parsedEvent[2];
               stopReading = true;
               break;
             }
@@ -125,8 +133,11 @@ export async function POST(req: NextRequest) {
     }
 
     if (aiResponse) {
-      // Send the AI response as a JSON object
-      return NextResponse.json({ response: aiResponse.trim() });
+      // Send the AI response and the 'next' token as JSON
+      return NextResponse.json({
+        response: aiResponse,
+        nextToken: nextTokenFromAPI,
+      });
     } else {
       return NextResponse.json(
         { error: "No response received from AI" },
