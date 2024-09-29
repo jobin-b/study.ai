@@ -67,7 +67,7 @@ export default function InitForm(props: InitFormProps) {
   };
 
   return (
-    <div className="flex flex-col items-center gap-8 pb-8">
+    <div className="flex flex-col items-center gap-4 pb-8">
       {output && (
         <div className="relative w-full max-w-10xl p-6 bg-[#2c2f42] border border-[#3b3f58] rounded-lg text-white">
           <button
@@ -86,7 +86,7 @@ export default function InitForm(props: InitFormProps) {
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-stretch max-w-2xl gap-6 p-8 bg-gray-800 rounded-lg shadow-lg"
+        className="flex flex-col items-stretch max-w-2xl gap-6 p-8 bg-gray-900 rounded-lg shadow-xl"
       >
         <h2 className="text-3xl text-center text-white font-semibold mb-4">
           Upload Lecture Slides
@@ -99,18 +99,18 @@ export default function InitForm(props: InitFormProps) {
             type="file"
             accept=".pdf"
             onChange={handleFileChange}
-            className="border-2 border-gray-600 rounded-xl p-3 w-full text-lg text-white bg-gray-700 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="flex-grow p-3 text-lg text-gray-200 bg-gray-700 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700"
           />
         </div>
 
         <button
           type="submit"
           disabled={isLoading || !file}
-          className={`w-full p-3 text-lg font-semibold rounded-xl transition duration-300 ease-in-out ${
+          className={`w-full p-3 text-lg font-semibold rounded-lg transition duration-300 ease-in-out ${
             isLoading || !file
-              ? "bg-gray-500 cursor-not-allowed"
-              : "bg-indigo-600 hover:bg-indigo-500"
-          } text-white border-2 border-indigo-600`}
+              ? "bg-gradient-to-r from-gray-600 to-gray-500 cursor-not-allowed"
+              : "bg-gradient-to-r from-indigo-600 to-indigo-400"
+          } text-white`}
         >
           {isLoading ? "Generating..." : "Generate Notes"}
         </button>
