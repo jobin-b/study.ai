@@ -104,7 +104,7 @@ const AIChatComponent: React.FC = () => {
               </span>
             </div>
             <h2 className="text-5xl animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,theme(colors.gray.200),theme(colors.indigo.200),theme(colors.gray.50),theme(colors.indigo.300),theme(colors.gray.200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle font-semibold text-transparent">
-              Chat With AI
+              Quizzed by AI!
             </h2>
           </div>
 
