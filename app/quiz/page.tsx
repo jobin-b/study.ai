@@ -94,11 +94,11 @@ const AIChatComponent: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Homer />
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        <div className="pb-6 w-full h-full">
-          <div className="mx-auto max-w-3xl pb-6 text-center">
+      <div className="flex-grow flex flex-col mx-auto w-full max-w-5xl px-4 sm:px-6 py-8">
+        <div className="flex flex-col h-full">
+          <div className="text-center mb-8">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-gradient-to-r before:from-transparent before:to-indigo-200/50 after:h-px after:w-8 after:bg-gradient-to-l after:from-transparent after:to-indigo-200/50">
               <span className="text-3xl inline-flex bg-gradient-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
                 Practice Quiz
@@ -109,64 +109,71 @@ const AIChatComponent: React.FC = () => {
             </h2>
           </div>
 
-          <div className="bg-gray-800 rounded-lg p-4 h-[50vh] overflow-y-auto mb-4">
-            {messages.map((msg, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className={`mb-4 ${
-                  msg.role === "user" ? "text-right" : "text-left"
-                }`}
-              >
-                <div
-                  className={`inline-block p-3 rounded-lg ${
-                    msg.role === "user"
-                      ? "bg-indigo-600 text-white"
-                      : "bg-gray-700 text-indigo-200"
+          <div className="flex-grow flex flex-col">
+            <div className="bg-gray-800 rounded-lg p-4 mb-4 overflow-y-auto h-[500px]">
+              {messages.length === 0 && (
+                <div className="text-center text-gray-500 mt-4">
+                  Start a conversation or upload a PDF to begin.
+                </div>
+              )}
+              {messages.map((msg, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className={`mb-4 ${
+                    msg.role === "user" ? "text-right" : "text-left"
                   }`}
                 >
-                  <Markdown>{msg.content}</Markdown>
-                </div>
-              </motion.div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
+                  <div
+                    className={`inline-block p-3 rounded-lg ${
+                      msg.role === "user"
+                        ? "bg-indigo-600 text-white"
+                        : "bg-gray-700 text-indigo-200"
+                    }`}
+                  >
+                    <Markdown>{msg.content}</Markdown>
+                  </div>
+                </motion.div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex items-center">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                className="flex-grow p-2 rounded-l-lg bg-gray-700 text-white focus:outline-none"
-                placeholder="Type your message..."
-                disabled={isLoading}
-              />
-              <button
-                type="submit"
-                className="btn-sm relative rounded-r-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:bg-indigo-400"
-                disabled={isLoading}
-              >
-                {isLoading ? "Sending..." : "Send"}
-              </button>
-            </div>
-            <div className="flex items-center space-x-4">
-              <input
-                type="file"
-                onChange={handleFileChange}
-                accept=".pdf"
-                className="flex-grow p-2 text-sm text-gray-200 bg-gray-700 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700"
-              />
-              {file && (
-                <span className="text-sm text-indigo-200">{file.name}</span>
-              )}
-            </div>
-          </form>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  className="flex-grow p-3 rounded-l-lg bg-gray-700 text-white focus:outline-none"
+                  placeholder="Type your message..."
+                  disabled={isLoading}
+                />
+                <button
+                  type="submit"
+                  className="btn-sm relative rounded-r-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700 disabled:bg-indigo-400"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Sending..." : "Send"}
+                </button>
+              </div>
+              <div className="flex items-center space-x-4">
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  accept=".pdf"
+                  className="flex-grow p-2 text-sm text-gray-200 bg-gray-700 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700"
+                />
+                {file && (
+                  <span className="text-sm text-indigo-200">{file.name}</span>
+                )}
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
