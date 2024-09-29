@@ -13,6 +13,7 @@
       "npm:@types/react@^18": "npm:@types/react@18.3.10",
       "npm:canvas@^2.11.2": "npm:canvas@2.11.2",
       "npm:dotenv@^16.4.5": "npm:dotenv@16.4.5",
+      "npm:framer-motion@^11.9.0": "npm:framer-motion@11.9.0_react@18.3.1_react-dom@18.3.1__react@18.3.1",
       "npm:grey-matter@^0.0.0": "npm:grey-matter@0.0.0",
       "npm:lucide-react@^0.446.0": "npm:lucide-react@0.446.0_react@18.3.1",
       "npm:markdown-to-html@^0.0.13": "npm:markdown-to-html@0.0.13",
@@ -1151,6 +1152,14 @@
           "asynckit": "asynckit@0.4.0",
           "combined-stream": "combined-stream@1.0.8",
           "mime-types": "mime-types@2.1.35"
+        }
+      },
+      "framer-motion@11.9.0_react@18.3.1_react-dom@18.3.1__react@18.3.1": {
+        "integrity": "sha512-nCfGxvsQecVLjjYDu35G2F5ls+ArE3FBfhxV0RSiisMaUKqteq5DMBFNRKwMyVj+VqKTNhawt+BV480YCHKFlQ==",
+        "dependencies": {
+          "react": "react@18.3.1",
+          "react-dom": "react-dom@18.3.1_react@18.3.1",
+          "tslib": "tslib@2.7.0"
         }
       },
       "fs-minipass@2.1.0": {

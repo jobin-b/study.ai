@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Homer from "@/components/ui/homer";
+import Markdown from "react-markdown";
 
 interface Message {
   role: "user" | "ai";
@@ -105,7 +106,7 @@ const AIChatComponent: React.FC = () => {
                       : "bg-gray-700 text-indigo-200"
                   }`}
                 >
-                  {msg.content}
+                  <Markdown>{msg.content}</Markdown>
                 </div>
               </motion.div>
             ))}
