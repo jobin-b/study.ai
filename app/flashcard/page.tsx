@@ -191,7 +191,7 @@ const FlashcardApp: React.FC = () => {
                 <textarea
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  className="w-full p-3 text-gray-900 bg-gray-100 rounded-lg"
+                  className="w-full flex-grow p-3 rounded-lg bg-gray-700 text-white focus:outline-none"
                   placeholder="Enter text for flashcards..."
                   rows={4}
                 />
@@ -201,7 +201,7 @@ const FlashcardApp: React.FC = () => {
                   type="file"
                   onChange={handleFileChange}
                   accept=".pdf"
-                  className="w-full p-2 text-sm text-gray-900 bg-gray-100 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-500 file:text-white hover:file:bg-indigo-600"
+                  className="flex-grow w-full p-2 text-sm text-gray-200 bg-gray-700 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700"
                 />
               </div>
               <button

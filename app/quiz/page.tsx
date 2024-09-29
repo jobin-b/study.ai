@@ -141,7 +141,7 @@ const AIChatComponent: React.FC = () => {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="flex items-center">
+              <div className="flex items-center justify-stretch">
                 <input
                   type="text"
                   value={input}
@@ -152,7 +152,7 @@ const AIChatComponent: React.FC = () => {
                 />
                 <button
                   type="submit"
-                  className="btn-sm relative rounded-r-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700 disabled:bg-indigo-400"
+                  className="h-full p-3 text-md relative rounded-r-lg bg-indigo-600 font-medium text-white hover:bg-indigo-700 disabled:bg-indigo-400"
                   disabled={isLoading}
                 >
                   {isLoading ? "Sending..." : "Send"}
