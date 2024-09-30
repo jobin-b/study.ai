@@ -1,0 +1,117 @@
+{
+  "title": "summarizer",
+  "description": "A blank board. Use it as a starting point for your creations.",
+  "version": "0.0.1",
+  "nodes": [
+    {
+      "type": "input",
+      "id": "input",
+      "configuration": {
+        "schema": {
+          "properties": {
+            "context": {
+              "type": "array",
+              "title": "Context",
+              "examples": [],
+              "items": {
+                "type": "object",
+                "behavior": [
+                  "llm-content"
+                ],
+                "format": "text-file"
+              },
+              "default": "[{\"role\":\"user\",\"parts\":[{\"text\":\"\"}]}]"
+            }
+          },
+          "type": "object",
+          "required": []
+        }
+      },
+      "metadata": {
+        "visual": {
+          "x": -282,
+          "y": -12,
+          "collapsed": "expanded"
+        },
+        "logLevel": "debug"
+      }
+    },
+    {
+      "type": "output",
+      "id": "output",
+      "configuration": {
+        "schema": {
+          "properties": {
+            "context": {
+              "type": "array",
+              "title": "Context",
+              "examples": [],
+              "items": {
+                "type": "object",
+                "behavior": [
+                  "llm-content"
+                ]
+              },
+              "default": "null"
+            }
+          },
+          "type": "object",
+          "required": []
+        }
+      },
+      "metadata": {
+        "visual": {
+          "x": 558,
+          "y": -7,
+          "collapsed": "expanded"
+        }
+      }
+    },
+    {
+      "id": "specialist-7239058b",
+      "type": "specialist",
+      "metadata": {
+        "visual": {
+          "x": 76,
+          "y": -9,
+          "collapsed": "expanded"
+        },
+        "title": "Summarizer",
+        "logLevel": "debug"
+      },
+      "configuration": {
+        "model": "gemini-1.5-flash-latest",
+        "persona": {
+          "role": "user",
+          "parts": [
+            {
+              "text": "Convert the lecture slides into study notes."
+            }
+          ]
+        },
+        "task": {
+          "role": "user",
+          "parts": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "input",
+      "to": "specialist-7239058b",
+      "out": "context",
+      "in": "in"
+    },
+    {
+      "from": "specialist-7239058b",
+      "to": "output",
+      "out": "out",
+      "in": "context"
+    }
+  ]
+}
